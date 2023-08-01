@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html style="width: 100%; height: 100%; overflow: auto; margin: 0px">
+    <head>
+        
+        <script type="text/javascript" src="/static/js_static/lib/webgl-utils.js"></script>
+        <script type="text/javascript" src="/static/js_static/lib/webgl-debug.js"></script>
+        <script type="text/javascript" src="/static/js_static/lib/cuon-utils.js"></script>
+        <script type="text/javascript" src="/static/js_static/lib/cuon-matrix.js"></script>
+
+        <meta charset="utf-8">
+        <title>Glob</title>
+        <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+        <script>
+            let m_host=window.location.host;
+            window.WebSocket = window.WebSocket || window.MozWebSocket;
+            let auto_on=1;
+            let ws_url='ws://'+window.location.host+'/ws';
+            let ws0;
+            let ws1;
+
+            let newXHR;
+            let nn=1;
+            let ssi=0;
+            let m_url;
+            let m_param;
+
+            let n_attempt=0;
+
+            let m_sender=0;
+
+            function ws_stat(m)
+            {
+                let x1=document.getElementById('ws_stat');
+                if(m==0)
+                {
+                    x1.style.color='#457efe'; /* blue */
+                }
+                else if(m==1)
+                {
+                    x1.style.color='#65c178'; /* green */
+                }
+                else if(m==2)
+                {
+                    x1.style.color='#fe457e'; /* red */
+                }
+                else if(m==3)
+                {
+                    x1.style.color='#fe953e'; /* orange */
+                }
+            }
+            function ws_conn(n)
+            {
+                if(n==0)
+                {
+                    ws0 = new WebSocket(ws_url);
+                    ws0.onopen = function () { ws_stat(1); };
+                    ws0.onclose = function () { ws_stat(0); };
+                    ws0.onerror = function () { ws_stat(2); };
+                    ws0.onmessage = function (message) { ws_stat(3);ws_msg(message); ws_stat(1);};
+                }
+                else if(n==1)
+                {
+                    ws1 = new WebSocket(ws_url);
+                    ws1.onopen = function () { ws_stat(1); };
+                    ws1.onclose = function () { ws_stat(0); };
+                    ws1.onerror = function () { ws_stat(2); };
+                    ws1.onmessage = function (message) { ws_stat(3);ws_msg(message); ws_stat(1);};
+                }
+                
+            }
+            function ws_msg(msg)
+            {
+                //alert(msg.data);
+                let x1=document.getElementById('local3_1');
+                let x2=0;
+                //x1.innerHTML=x1.innerHTML+msg.data;
+                let new_js = 0;
+                try
+                {
+                    new_js=JSON.parse(msg.data);
+                    if(new_js.type==0)
+                    {
+                        alert("empty JSON");
+                        x1.innerHTML=x1.innerHTML+msg.data;
+                    }
+                    else if(new_js.type=="HTML")
+                    {
+                        var html_data=new_js.html_data;
+                        if(new_js.back_id)
+                        {
+                            if(new_js.back_id=="internal")
+                            {
+                                var cmd_str=new_js.cmd_str;
+                                if(cmd_str=="test_pwd")
+                                {
+                                    enter_result(new_js.html_data);
+                                }
+                                
+                                ;
+                            }
+                            else
+                            {
+                                x2=document.getElementById(new_js.back_id);
+                                if(x2)
+                                {
+                                    x1=x2;
+                                }
+                                if(new_js.add==1)
+                                {
+                                    x1.innerHTML=msg.data+x1.innerHTML;
+                                }
+                                else
+                                {
+                                    x1.innerHTML=html_data;
+                                }
+                                if(new_js.dis_js==0)
+                                {
+                                    activate_script(x1);
+                                }
+                            }
+                        }
+                        
+                        //main();
+                    }
+                    else if(new_js.type=="gl_data_raw")
+                    {
+                        //var currentAngle=[new_js.currentAngle_0, new_js.currentAngle_1];
+                        apply_gl_data(new_js);
+                        //main();
+                    }
+                    else
+                    {
+                        alert(new_js.type + " | " + new_js.x1 + " | " + new_js.x2 );
+                    }
+                }
+                catch(e)
+                {
+                    x1.innerHTML=msg.data+x1.innerHTML;
+                }
+            }
+
+            function ws_conn_on()
+            {
+                ws_conn(0);
+                timer_tm0=setTimeout("b_func8('CUBE_Rotate.htm')",500);
+            }   
+            
+            function b_func8(page_name) // Get any page (file HTML) from websocket 
+            {
+                //let clientID=555.6;
+                var msg = {
+                    type: "static_page",
+                    back_id: "local3_1",
+                    page: page_name
+                    //page: "html_003.htm"
+                    //page: "micro.htm"
+                };
+                delete Fog_01;
+                get_ws_data(msg);
+            }
+            
+        /* Calls examples:
+
+            function b_func2()
+            {
+                ws_conn(0);
+            }            
+            function b_func3()
+            {
+                n_attempt=n_attempt+1;
+                m_url="/page_001";
+                m_param="xx="+n_attempt+"&ssi="+ssi;
+                post_data(m_url,m_param,back_post_data,'local3_1');
+            }
+            function b_func4()
+            {
+                n_attempt=n_attempt+1;
+                m_url="/view_tbl_001";
+                m_param="xx="+n_attempt+"&ssi="+ssi;
+                post_data(m_url,m_param,back_post_data,'local3_1');
+            }
+            function b_func5()
+            {
+                n_attempt=n_attempt+1;
+                m_url="/view_tbl_002";
+                m_param="xx="+n_attempt+"&ssi="+ssi;
+                post_data(m_url,m_param,back_post_data,'local3_1');
+            }
+            function b_func6()
+            {
+                //alert(m_url);
+                ws0.send('TBL_1');
+            }
+            function b_func7()
+            {
+                let clientID=555.6;
+                var msg = {
+                    type: "message",
+                    float_num: -123.4,
+                    text: document.getElementById("text_data").value,
+                    id:   clientID,
+                    date: Date.now()
+                };
+                let rs='{"x1":1, "x2":"AAA",}';
+                let rr=eval("("+rs+")");
+                //let rr=0;
+                rr.x1=3;
+                rr.x2="ABC";
+                let sss=JSON.stringify(msg);
+                let new_js=JSON.parse(sss);
+                ws0.send(sss);
+                //ws0.send('test_json_1');
+                let x1=document.getElementById('local3_1');
+                x1.innerHTML="send [test_json_1]...</br>";
+            }
+            function b_func10() // send CMD message for activate second tread...
+            {
+                var msg = {
+                    type: "cmd",
+                    back_id: "local3_1",
+                    cmd_str: "timer",
+                    cmd_int: 1
+                };
+                delete GL_01;
+                delete Fog_01;
+                //GL_01=null;
+                get_ws_data(msg);
+            }
+            function b_func11() // send CMD message for teminate second tread...
+            {
+                var msg = {
+                    type: "cmd",
+                    back_id: "local3_1",
+                    cmd_str: "timer",
+                    cmd_int: 10
+                };
+                delete GL_01;
+                delete Fog_01;
+                //GL_01=null;
+                get_ws_data(msg);
+            }
+            function b_func12(table_name) // send request message for any data
+            {
+                var msg = {
+                    type: "data",
+                    back_id: "local3_1",
+                    cmd_str: table_name,
+                    cmd_int: 0
+                };
+                delete GL_01;
+                delete Fog_01;
+                //GL_01=null;
+                get_ws_data(msg);
+            }
+            function b_func13() // change_pwd
+            {
+                var msg = {
+                    type: "cmd",
+                    back_id: "local3_1",
+                    cmd_str: "change_pwd",
+                    emp_id: 1,
+                    new_pwd: "mgr"
+                };
+                delete GL_01;
+                delete Fog_01;
+                //GL_01=null;
+                get_ws_data(msg);
+                var msg2 = {
+                    type: "cmd",
+                    back_id: "local3_1",
+                    cmd_str: "change_pwd",
+                    emp_id: 3,//1,
+                    new_pwd: "23" //"mgr"
+                };
+                delete GL_01;
+                delete Fog_01;
+                //GL_01=null;
+                get_ws_data(msg2);
+            }
+            function b_func14() // test_pwd
+            {
+                var x1=document.getElementById('text_usr');
+                var x2=document.getElementById('text_pwd');
+                var msg = {
+                    type: "cmd",
+                    back_id: "local3_1",
+                    cmd_str: "test_pwd",
+                    m_usr: x1.value,
+                    m_pwd: x2.value
+                };
+                delete GL_01;
+                delete Fog_01;
+                //GL_01=null;
+                get_ws_data(msg);
+            }
+            function b_func15() // test_pwd
+            {
+                //var x1=document.getElementById('text_usr');
+                //var x2=document.getElementById('text_pwd');
+                var msg = {
+                    type: "gl_data_raw",
+                    back_id: "gl_01",
+                    //cmd_str: "test_pwd",
+                    currentAngle_0: 15.0,
+                    currentAngle_1: 30.0
+                    //m_usr: x1.value,
+                    //m_pwd: x2.value
+                };
+                //delete GL_01;
+                //delete Fog_01;
+                //GL_01=null;
+                get_ws_data(msg);
+                //apply_gl_data([15.0, 30.0]);
+            }
+            function b_func16() // send CMD message for activate second tread...
+            {
+                var msg = {
+                    type: "cmd",
+                    back_id: "local3_1",
+                    cmd_str: "gl_data_distr",
+                    cmd_int: 1
+                };
+                //delete GL_01;
+                //delete Fog_01;
+                //GL_01=null;
+                get_ws_data(msg);
+                m_sender=1;
+            }
+            function b_func17() // send CMD message for teminate second tread...
+            {
+                var msg = {
+                    type: "cmd",
+                    back_id: "local3_1",
+                    cmd_str: "gl_data_distr",
+                    cmd_int: 10
+                };
+                //delete GL_01;
+                //delete Fog_01;
+                //GL_01=null;
+                get_ws_data(msg);
+                m_sender=0;
+            }
+
+            */ 
+
+
+            function get_ws_data(msg)
+            {
+                let sss=JSON.stringify(msg);
+                
+                ws0.send(sss);
+            }
+
+
+            // for AJAX
+            function Get_HTTP()
+            {
+                var http_o;
+                try
+                {
+                    http_o = new XMLHttpRequest();
+                }
+                catch(e)
+                {   
+                    try
+                    {
+                        http_o=new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    catch(E)
+                    {
+                        alert('Нет xmlHttpRequest');
+                    }
+                }
+                //alert('ffff');
+                return http_o;
+            }
+            function post_data(x_url,x_param,x_ret_func,x_dom_id)
+            {  
+                
+                if(nn==0)
+                {return;}
+                nn=0;
+                newXHR = Get_HTTP();
+                newXHR.open('POST',x_url);
+                newXHR.onreadystatechange=function()
+                {
+                    if(newXHR==null)
+                    {return;}
+                
+                    if(newXHR.readyState===4) //&&newXHR.status ===200
+                    {
+                        x_ret_func.call("A",newXHR.responseText,x_dom_id);
+                        nn=1;
+                        newXHR=null;
+                    }
+                };
+            //m_param="ssi="+ssi;
+                newXHR.send(x_param);
+            }
+
+            function back_post_data(x_responseText,x_dom_id)
+            {
+                var t1=document.getElementById(x_dom_id);
+                t1.innerHTML=x_responseText;
+                activate_script(t1);
+            }
+            function activate_script(t1)
+            {
+                var ss="";
+                var ss2="";
+                var ss3="";
+                var n=0;
+                var elem;
+                
+                //var t1=document.getElementById(x_dom_id);
+                let x_dom_id=t1.id;
+                let jn=t1.getElementsByTagName("script");
+                let k=jn.length;
+                let str_i=[];
+                //let str_i_onload=[];
+                for(a of jn)
+                {
+                    if(a.id=="")
+                    {
+                        ss =a.src;
+                        ss2=a.onload;
+                        str_i[n]=a;
+                        n=n+1;
+                    }
+                    if(n>100)
+                    {break;}
+                }
+                n=0;
+                for(i of str_i)
+                {
+                    if(1==1)
+                    {
+                        ss =i.src;
+                        ss2=i.onload;
+                        ss3=i.text;
+                        if(ss!="")
+                        {
+                            //ss=i.src;
+                            t1.removeChild(i);
+                            elem=document.createElement("script");
+                            elem.type="text/javascript";
+                            elem.src=ss;
+                            elem.onload=ss2;
+                            elem.text=ss3;
+                            elem.id=x_dom_id+"-JS"+n;
+                            t1.appendChild(elem);
+                        }
+                        else
+                        {
+                            t1.removeChild(i);
+                            elem=document.createElement("script");
+                            elem.type="text/javascript";
+                            //elem.src=ss;
+                            elem.onload=ss2;
+                            elem.text=ss3;
+                            elem.id=x_dom_id+"-JS"+n;
+                            t1.appendChild(elem);
+                        }
+                        n=n+1;
+                    }
+                    if(n>100)
+                    {break;}
+                }
+                jn=null;
+                str_i=null;
+                elem=null;
+            }
+            
+            ws_conn_on();
+
+        </script>
+    </head>
+    <body style="width: 100%; height: 100%; overflow: auto; margin: 0px">
+        <div id="ws_stat" style="display: none; position:absolute;">websocket</div>
+        <div id="local3_1"></div>
+    </body>
+</html>

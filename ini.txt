@@ -1,0 +1,4 @@
+http_port:9085
+http_treads:8
+ini_def_page:./static/html_static/index_01.html
+
