@@ -20,7 +20,7 @@ url examples:
 - ```http://127.0.0.1:9085/view_tbl_001```	(example for get small  html table, pre - installed examle endpoint #1)
 - ```http://127.0.0.1:9085/view_tbl_002```	(example for get medium html table, pre - installed examle endpoint #2)
 
-apps users info and login/password (for apps, not for server):
+apps users info and login/password (for 'apps', not for server):
 <table><tr><td>id</td><td>USER</td><td>PASSWORD</td></tr>
 <tr><td>1</td><td>sys</td><td>mgr</td></tr>
 <tr><td>3</td><td>user1</td><td>23</td></tr>
