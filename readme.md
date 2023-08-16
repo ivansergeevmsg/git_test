@@ -1,6 +1,6 @@
 # Motivation
 When I was faced with the need to create a system for publishing BI-information (and any other), I found that there was no ready-made solution for making an effective continuous platform for a C-application. Existing solutions (like NGINX) are forced to tear up space due to CGI/FastCGI and the like and the your application will not see incoming raw HTTP content, for example.  
-I tried to assemble a set of modules that allow me to assemble an initial semi-finished product for a C-application. Next, you can develop the functionality in the desired direction.  
+I tried to assemble a set of modules that allow me to assemble an initial semi-finished product for a C-application. Next, you can develop the functionality in the preferred direction.  
 
 # Now this set includes:
 - A multithreaded web server that processes requests to both static content and endpoint in the application. Works with GET, POST and Websockets. There is a parsing and transmission of parameters.
