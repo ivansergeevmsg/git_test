@@ -1,5 +1,5 @@
 This pack is for Oracle Linux (RedHat/Fedora/Centos family)  
-file ```glob3``` -executable file for Linux family
+file ```glob3``` - compiled executable file for this Linux family
 
 GCC build cmd:  
 ```gcc main_http.c -lpthread -lsqlite3 -g3 -lm -std=c99 -O3 -o glob3```
