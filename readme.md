@@ -5,7 +5,7 @@ I tried to assemble a set of modules that allow me to assemble an initial semi-f
 # Now this set includes:
 - A multithreaded web server that processes requests to both static content and endpoint in the application. Works with GET, POST and Websockets. There is a parsing and transmission of parameters.
 - Basic structures and initial functionality for processing tables - storage, cell access, sorting, grouping, reading and writing to a CSV file.
-- Пример использования SQLite.
+- Example of using SQLite.
 - Example of connection of endpoints and global application object for sharing between web session.
 - An example of a simple frontend-websockets application (HTML/Javascript/WebGL) to demonstrate the operation of the web application described above.
 
