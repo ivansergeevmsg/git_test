@@ -46,7 +46,7 @@ The working directory should contain the following:
 - 16470096361658847.jpg - Pic for Error page
 - folders: data (for application tables emps.csv and pwd.csv), app_logs (for logs file), static (for frontend example - html, JS, CSS and pics)
 # The scenario of the example
-- Run file glob3
+- Run file ```glob3```
 - Visit ```http://127.0.0.1:9085```
 - Mouse double click on page
 - Enter ```user1``` and ```23``` to login to "App"
