@@ -51,4 +51,4 @@ The working directory should contain the following:
 - Mouse double click on page
 - Enter ```user1``` and ```23``` to login to "App"
 - Navigate between slides: switch between slides using the sidebar on the right. The cube can be captured with the mouse and rotated. Double-click on the cube - this is the shift of the cube layer. Last slide - 2D graphs example. Double-click on graph for passing on top level. Top-level graph can be moving by mouse.
-- Use tow or more browsers for view this webresource (```http://127.0.0.1:9085```). Use last(lower) button for join current browser to collaboration. And now, activity on one page will be propagate to anothers.
+- Use tow or more browsers for view this web resource (```http://127.0.0.1:9085```). Use last(lower) button for join current browser to collaboration. And now, activity on one page will be propagate to anothers.
