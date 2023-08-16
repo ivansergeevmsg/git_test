@@ -37,3 +37,18 @@ apps users info and login/password (for 'apps', not for server):
 <tr><td>1</td><td>sys</td><td>mgr</td></tr>
 <tr><td>3</td><td>user1</td><td>23</td></tr>
 </table>
+
+# Upper folder structure
+The working directory should contain the following:
+- executable file (glob3)
+- text file with settings (ini.txt)
+- CSV file for table examples (test_data_02S.csv)
+- 16470096361658847.jpg - Pic for Error page
+- folders: data (for application tables emps.csv and pwd.csv), app_logs (for logs file), static (for frontend example - html, JS, CSS and pics)
+# The scenario of the example
+- Run file glob3
+- Visit ```http://127.0.0.1:9085```
+- Mouse double click on page
+- Enter ```user1``` and ```23``` to login to "App"
+- Navigate between slides: switch between slides using the sidebar on the right. The cube can be captured with the mouse and rotated. Double-click on the cube - this is the shift of the cube layer. Last slide - 2D graphs example. Double-click on graph for passing on top level. Top-level graph can be moving by mouse.
+- Use tow or more browsers for view this webresource (```http://127.0.0.1:9085```). Use last(lower) button for join current browser to collaboration. And now, activity on one page will be propagate to anothers.
